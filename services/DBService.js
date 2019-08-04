@@ -3,7 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 const config = require('../config')
 
 // Database Name
-const dbName = 'TRIP_DB';
+const dbName = 'pictogram_db';
 
 var dbConn = null;
 

@@ -6,7 +6,6 @@ const COLLECTION_USER = 'user';
 
 async function getUsers() {
     const collection = await DBService.getCollection(COLLECTION_USER)
-    // {$or:[{},{ pending: { tripId: id.tripId } }]}
     try {
         const users = await collection.find().toArray();
         return users
@@ -31,7 +30,10 @@ async function getByEmail(email) {
 async function add(newUser) {
     const collection = await DBService.getCollection(COLLECTION_USER)
     try {
+        
+        
         await collection.insertOne(newUser);
+        console.log('added', newUser);
         return newUser;
     } catch (err) {
         console.log(`ERROR: cannot insert user`)

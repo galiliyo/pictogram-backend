@@ -11,7 +11,9 @@ async function login(req, res) {
     }
 }
 async function signup(req, res) {
+    
     const newUser = req.body;
+    console.log('try to signup',newUser);
     try {
         const user = await AuthService.signup(newUser)
         req.session.user = user;
