@@ -7,7 +7,7 @@ const app = express()
 const session = require('express-session')
 const http = require('http').createServer(app);
 const logger = require('./services/LoggerService')
-const TripRoutes = require('./api/trip/TripRoutes')
+const TripRoutes = require('./api/post/PostRoutes')
 const AuthRoutes = require('./api/auth/AuthRoutes')
 const UserRoutes = require('./api/user/UserRoutes')
 const ChatRoutes = require('./api/chat/ChatRoutes')
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV !== 'production') {
     };
     app.use(cors(corsOptions));
 }
-app.use('/api/trip', TripRoutes)
+app.use('/api/post', TripRoutes)
 app.use('/api/auth', AuthRoutes)
 app.use('/api/user', UserRoutes)
 app.use('/api/chat', ChatRoutes)

@@ -9,9 +9,11 @@ module.exports = {
     add
 }
 
-const COLLECTION_NAME = 'trip';
+const COLLECTION_NAME = 'post';
 
 async function query(params) {
+    console.log('query');
+    
     var criteria = {}
     if (params.destination) {
         const regex = new RegExp(params.destination)
@@ -22,8 +24,8 @@ async function query(params) {
     if (params.types) criteria.types = { $in: params.types };
     const collection = await DBService.getCollection(COLLECTION_NAME)
     try {
-        const trips = await collection.find({ $or: [criteria, { params }] }).toArray();
-        return trips;
+        const posts = await collection.find({ $or: [criteria, { params }] }).toArray();
+        return posts;
     } catch (err) {
         throw err;
     }
@@ -32,8 +34,8 @@ async function query(params) {
 async function getById(id) {
     const collection = await DBService.getCollection(COLLECTION_NAME)
     try {
-        const trip = await collection.findOne({ "_id": ObjectId(id) })
-        return trip;
+        const post = await collection.findOne({ "_id": ObjectId(id) })
+        return post;
     } catch (err) {
         throw err;
     }
@@ -43,7 +45,7 @@ async function getById(id) {
 async function remove(id) {
     const collection = await DBService.getCollection(COLLECTION_NAME)
     try {
-        const tripToCheck = await collection.findOne({ "_id": ObjectId(id) })
+        const postToCheck = await collection.findOne({ "_id": ObjectId(id) })
         
         await collection.remove({ "_id": ObjectId(id) })
         
@@ -52,23 +54,23 @@ async function remove(id) {
     }
 }
 
-async function update(trip) {
+async function update(post) {
     const collection = await DBService.getCollection(COLLECTION_NAME)
-    const id = new ObjectId(trip._id)
-    trip._id = id
+    const id = new ObjectId(post._id)
+    post._id = id
     try {
-        await collection.updateOne({ "_id": trip._id }, { $set: trip })
-        return trip;
+        await collection.updateOne({ "_id": post._id }, { $set: post })
+        return post;
     } catch (err) {
         throw err;
     }
 }
 
-async function add(trip) {
+async function add(post) {
     const collection = await DBService.getCollection(COLLECTION_NAME)
     try {
-        await collection.insertOne(trip);
-        return trip;
+        await collection.insertOne(post);
+        return post;
     } catch (err) {
         throw err;
     }

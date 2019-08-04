@@ -40,7 +40,7 @@ function setup(http) {
             rooms.push(room)
             socket.join(room)
         });
-        socket.on('join trip', ({ user, owner }) => {
+        socket.on('join post', ({ user, owner }) => {
             var room = rooms.find(room => room === owner._id)
             io.to(room).emit('welcome', { txt: 'heyy' })
         });
