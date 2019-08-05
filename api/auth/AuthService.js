@@ -14,6 +14,7 @@ async function login(email, password) {
 }
 
 async function signup(newUser){
+    
     if (!newUser.email || !newUser.pass || !newUser.firstName || !newUser.lastName) return Promise.reject('email, first and last name and password are required!')
     const userExists = await UserService.getByEmail(newUser.email)
     if(userExists) return Promise.reject('Email exists, login')

@@ -1,7 +1,7 @@
 const DBService = require('../../services/DBService')
 const ObjectId = require('mongodb').ObjectId
 
-const COLLECTION_USER = 'user';
+const COLLECTION_USER = 'users';
 
 
 async function getUsers() {
@@ -42,9 +42,10 @@ async function add(newUser) {
 }
 
 async function getById(id) {
-    const collection = await DBService.getCollection(COLLECTION_USER)
+    const collection = await DBService.getCollection(COLLECTION_USER)  
     try {
         const user = await collection.findOne({ "_id": ObjectId(id) })
+        
         return user;
     } catch (err) {
         throw err;
