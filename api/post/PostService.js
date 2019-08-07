@@ -9,7 +9,9 @@ module.exports = {
   remove,
   update,
   add,
-  addComment
+  addComment,
+  // postAddLike,
+  // postRemoveLike
 };
 
 const COLLECTION_NAME = "posts";
@@ -107,3 +109,30 @@ async function addComment(commentObj) {
     throw err;
   }
 }
+
+
+// async function postRemoveLike(userId, postId) {
+//   const collection = await DBService.getCollection(COLLECTION_NAME);
+//   try {
+//     await collection.updateOne(
+//       { _id: ObjectId(postId) },
+//       { $pull: { likedBy: userId } }
+//     );
+//     return Promise.resolve;
+//   } catch {
+//     return Promise.reject("Could not update likes");
+//   }
+// }
+
+// async function postAddLike(userId, postId) {
+//   const collection = await DBService.getCollection(COLLECTION_NAME);
+//   try {
+//     await collection.updateOne(
+//       { _id: ObjectId(postId) },
+//       { $addToSet: { likedBy: userId } }
+//     );
+//     return Promise.resolve;
+//   } catch {
+//     return Promise.reject("Could not update likes");
+//   }
+// }

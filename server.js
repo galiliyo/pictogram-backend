@@ -10,7 +10,6 @@ const logger = require('./services/LoggerService')
 const PostRoutes = require('./api/post/PostRoutes')
 const AuthRoutes = require('./api/auth/AuthRoutes')
 const UserRoutes = require('./api/user/UserRoutes')
-const ChatRoutes = require('./api/chat/ChatRoutes')
 
 const multer = require('multer')
 const cloudinary = require('cloudinary').v2;
@@ -40,7 +39,6 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api/post', PostRoutes)
 app.use('/api/auth', AuthRoutes)
 app.use('/api/user', UserRoutes)
-app.use('/api/chat', ChatRoutes)
 
 
 app.post('/upload/cloudinary', upload.single('imgUpload'), async (req, res) => {
@@ -63,5 +61,3 @@ http.listen(port, () => {
     logger.info('Server is running on port: ' + port)
 });
 
-const socketService = require('./services/SocketService')
-socketService.setup(http);

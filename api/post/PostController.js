@@ -66,10 +66,10 @@ async function updatePost(req, res) {
 }
 
 async function addComment(req, res) {
-  const comment = req.body;
-  console.log("comment", comment);
+  const commentObj = req.body;
+  console.log("comment", commentObj);
   try {
-    const updatedPost = await PostService.addComment(comment);
+    const updatedPost = await PostService.addComment(commentObj);
     res.json(updatedPost);
   } catch (err) {
     res.status(500).send("Could not add comment");
