@@ -10,14 +10,13 @@ module.exports = {
   update,
   add,
   addComment,
-  // postAddLike,
-  // postRemoveLike
+  postAddLike,
+  postRemoveLike
 };
 
 const COLLECTION_NAME = "posts";
 
 async function query(params) {
-  console.log("query");
 
   var criteria = {};
   if (params.keyWord) {
@@ -29,7 +28,6 @@ async function query(params) {
   // if (params.types) criteria.types = { $in: params.types };
   const collection = await DBService.getCollection(COLLECTION_NAME);
   try {
-    console.log("trying", COLLECTION_NAME);
     const posts = await collection.find({}).toArray();
     return posts;
   } catch (err) {
@@ -111,28 +109,32 @@ async function addComment(commentObj) {
 }
 
 
-// async function postRemoveLike(userId, postId) {
-//   const collection = await DBService.getCollection(COLLECTION_NAME);
-//   try {
-//     await collection.updateOne(
-//       { _id: ObjectId(postId) },
-//       { $pull: { likedBy: userId } }
-//     );
-//     return Promise.resolve;
-//   } catch {
-//     return Promise.reject("Could not update likes");
-//   }
-// }
+async function postRemoveLike(userId, postId) {
+  const collection = await DBService.getCollection(COLLECTION_NAME);
+  try {
+    console.log('trying to remove post',postId);
 
-// async function postAddLike(userId, postId) {
-//   const collection = await DBService.getCollection(COLLECTION_NAME);
-//   try {
-//     await collection.updateOne(
-//       { _id: ObjectId(postId) },
-//       { $addToSet: { likedBy: userId } }
-//     );
-//     return Promise.resolve;
-//   } catch {
-//     return Promise.reject("Could not update likes");
-//   }
-// }
+    await collection.updateOne(
+      { _id: ObjectId(postId) },
+      { $pull: { likedBy: userId } }
+    );
+    return Promise.resolve;
+  } catch {
+    return Promise.reject("Could not update likes at postRemoveLike");
+  }
+}
+
+async function postAddLike(userId, postId) {
+  const collection = await DBService.getCollection(COLLECTION_NAME);
+  try {
+   console.log('trying to add post',postId ,userId);
+    
+    await collection.updateOne(
+      { _id: ObjectId(postId) },
+      { $addToSet: { likedBy: userId } }
+    );
+    return Promise.resolve;
+  } catch {
+    return Promise.reject("Could not update likes at postAddLike");
+  }
+}

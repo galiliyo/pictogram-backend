@@ -1,4 +1,7 @@
 const UserService = require("./UserService");
+const PostService = require("../post/PostService");
+const DBService = require("../../services/DBService");
+const ObjectId = require("mongodb").ObjectId;
 
 module.exports = {
   getUsers,
@@ -38,11 +41,46 @@ async function updateUser(req, res) {
 }
 
 async function toggleLike(req, res) {
-  const likesUpdateObj = req.body;
-  try {
-    const updatedUser = await UserService.updateLikes(likesUpdateObj)
-    res.json(updatedUser)
-  } catch (err){
-    res.status(404).send(err);
+  const collection = await DBService.getCollection("users");
+
+  const { userId, postId } = req.body;
+  console.log("userId, postId", userId, postId);
+
+  let userLikes = await collection
+    .find({ _id: ObjectId(userId) })
+    .toArray()
+    .then(arr => arr[0].likedPosts);
+
+    console.log('userLikes',userLikes) 
+ 
+    if (userLikes.includes(postId)) {
+      console.log("already likes");
+
+      await Promise.all([
+        UserService.userRemoveLike(userId, postId),
+        PostService.postRemoveLike(userId, postId)
+      ]);
+    } else {
+      console.log("did not like");
+
+      await Promise.all([
+        UserService.userAddLike(userId, postId),
+        PostService.postAddLike(userId, postId)
+      ]);
+    }
+
+    let updatedUser = await collection
+      .find({ _id: ObjectId(userId) })
+      .toArray()
+      .then(arr => arr[0]);
+      res.json(updatedUser)
+  
   }
-}
+
+  // try {
+  //   const updatedUser = await UserService.updateLikes(likesUpdateObj)
+  //   res.json(updatedUser)
+  // } catch (err){
+  //   res.status(404).send(err);
+  // }
+// }

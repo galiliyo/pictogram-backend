@@ -60,44 +60,45 @@ async function update(user) {
     throw err;
   }
 }
-async function updateLikes(likesUpdateObj) {
+// async function updateLikes(likesUpdateObj) {
+//   const collection = await DBService.getCollection(COLLECTION_USER);
+//   const { userId, postId } = likesUpdateObj;
+//   console.log("userId, postId", userId, postId);
+
+//   let userLikes = await collection
+//     .find({ _id: ObjectId(userId) })
+//     .toArray()
+//     .then(arr => arr[0].likedPosts);
+
+//   try {
+//     if (userLikes.includes(postId)) {
+//       console.log("not already likes");
+//       await Promise.all([
+//         userRemoveLike(collection, userId, postId),
+//         postRemoveLike(userId, postId)
+//       ]);
+//     } else {
+//       console.log("already likes");
+
+//       await Promise.all([
+//         userAddLike(collection, userId, postId),
+//         postAddLike(userId, postId)
+//       ]);
+//     }
+
+//     let updatedUser = await collection
+//       .find({ _id: ObjectId(userId) })
+//       .toArray()
+//       .then(arr => arr[0]);
+//     return updatedUser;
+//   } catch (err) {
+//     console.log(err);
+//     // throw err;
+//   }
+// }
+
+async function userRemoveLike(userId, postId) {
   const collection = await DBService.getCollection(COLLECTION_USER);
-  const { userId, postId } = likesUpdateObj;
-  console.log("userId, postId", userId, postId);
-
-  let userLikes = await collection
-    .find({ _id: ObjectId(userId) })
-    .toArray()
-    .then(arr => arr[0].likedPosts);
-
-  try {
-    if (userLikes.includes(postId)) {
-      console.log("not already likes");
-      await Promise.all([
-        userRemoveLike(collection, userId, postId),
-        postRemoveLike(userId, postId)
-      ]);
-    } else {
-      console.log("already likes");
-
-      await Promise.all([
-        userAddLike(collection, userId, postId),
-        postAddLike(userId, postId)
-      ]);
-    }
-
-    let updatedUser = await collection
-      .find({ _id: ObjectId(userId) })
-      .toArray()
-      .then(arr => arr[0]);
-    return updatedUser;
-  } catch (err) {
-    console.log(err);
-    // throw err;
-  }
-}
-
-async function userRemoveLike(collection, userId, postId) {
   try {
     await collection.updateOne(
       { _id: ObjectId(userId) },
@@ -109,7 +110,8 @@ async function userRemoveLike(collection, userId, postId) {
   }
 }
 
-async function userAddLike(collection, userId, postId) {
+async function userAddLike(userId, postId) {
+  const collection = await DBService.getCollection(COLLECTION_USER);
   try {
     await collection.updateOne(
       { _id: ObjectId(userId) },
@@ -121,31 +123,7 @@ async function userAddLike(collection, userId, postId) {
   }
 }
 
-async function postRemoveLike(userId, postId) {
-  const collection = await DBService.getCollection("posts");
-  try {
-    await collection.updateOne(
-      { _id: ObjectId(postId) },
-      { $pull: { likedBy: userId } }
-    );
-    return Promise.resolve;
-  } catch {
-    return Promise.reject("Could not update likes at postRemoveLike");
-  }
-}
 
-async function postAddLike(userId, postId) {
-  const collection = await DBService.getCollection("posts");
-  try {
-    await collection.updateOne(
-      { _id: ObjectId(postId) },
-      { $addToSet: { likedBy: userId } }
-    );
-    return Promise.resolve;
-  } catch {
-    return Promise.reject("Could not update likes at postAddLike");
-  }
-}
 
 module.exports = {
   getUsers,
@@ -153,5 +131,7 @@ module.exports = {
   add,
   getById,
   update,
-  updateLikes
+  // updateLikes,
+  userAddLike,
+  userRemoveLike
 };
