@@ -104,7 +104,7 @@ async function userRemoveLike(userId, postId) {
       { _id: ObjectId(userId) },
       { $pull: { likedPosts: postId } }
     );
-    return Promise.resolve;
+    return Promise.resolve(true);
   } catch {
     return Promise.reject("Could not update likes at userRemoveLike");
   }
@@ -117,7 +117,8 @@ async function userAddLike(userId, postId) {
       { _id: ObjectId(userId) },
       { $addToSet: { likedPosts: postId } }
     );
-    return Promise.resolve;
+    console.log('added like to a user')
+    return Promise.resolve(true);
   } catch {
     return Promise.reject("Could not update likes at userAddLike");
   }

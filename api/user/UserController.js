@@ -59,14 +59,18 @@ async function toggleLike(req, res) {
       await Promise.all([
         UserService.userRemoveLike(userId, postId),
         PostService.postRemoveLike(userId, postId)
-      ]);
+      ]).catch(err => {
+        console.log('error removing a like', err)
+      })
     } else {
       console.log("did not like");
 
       await Promise.all([
+        PostService.postAddLike(userId, postId),
         UserService.userAddLike(userId, postId),
-        PostService.postAddLike(userId, postId)
-      ]);
+      ]).catch(err => {
+        console.log('error adding a like', err)
+      })
     }
 
     let updatedUser = await collection

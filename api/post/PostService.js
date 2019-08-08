@@ -3,17 +3,6 @@ const UserService = require("../user/UserService");
 const DBService = require("../../services/DBService");
 const ObjectId = require("mongodb").ObjectId;
 
-module.exports = {
-  query,
-  getById,
-  remove,
-  update,
-  add,
-  addComment,
-  postAddLike,
-  postRemoveLike
-};
-
 const COLLECTION_NAME = "posts";
 
 async function query(params) {
@@ -98,7 +87,7 @@ async function addComment(commentObj) {
   try {
     await collection.updateOne(
       {
-        _id: postId
+        _id: ObjectId(postId)
       },
       { $push: { comments: comment } }
     );
@@ -118,8 +107,9 @@ async function postRemoveLike(userId, postId) {
       { _id: ObjectId(postId) },
       { $pull: { likedBy: userId } }
     );
-    return Promise.resolve;
-  } catch {
+    return Promise.resolve(true);
+  } catch(err) {
+    console.log('error during postRemoveLike', err)
     return Promise.reject("Could not update likes at postRemoveLike");
   }
 }
@@ -128,13 +118,26 @@ async function postAddLike(userId, postId) {
   const collection = await DBService.getCollection(COLLECTION_NAME);
   try {
    console.log('trying to add post',postId ,userId);
-    
-    await collection.updateOne(
+  //  const post = await getById(postId)
+  //  console.log('post', post)
+    const result = await collection.updateOne(
       { _id: ObjectId(postId) },
       { $addToSet: { likedBy: userId } }
     );
-    return Promise.resolve;
+    console.log('added like to a post!', result)
+    return Promise.resolve(true);
   } catch {
     return Promise.reject("Could not update likes at postAddLike");
   }
 }
+
+module.exports = {
+  query,
+  getById,
+  remove,
+  update,
+  add,
+  addComment,
+  postAddLike,
+  postRemoveLike
+};
