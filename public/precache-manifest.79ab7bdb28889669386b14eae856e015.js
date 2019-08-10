@@ -20,16 +20,16 @@ self.__precacheManifest = [
     "url": "/robots.txt"
   },
   {
-    "revision": "84bd63734e7b1f0f946b76a8eaeb98ca",
+    "revision": "f2ec54344fa3a15c25a7d831ecd87b05",
     "url": "/index.html"
   },
   {
-    "revision": "1f4eba5e6d1f5c3af52e",
-    "url": "/js/app.527eb1ae.js"
+    "revision": "1f416515d692df430414",
+    "url": "/js/app.5c5110b3.js"
   },
   {
-    "revision": "353ea0a0ae707df315407d72fa507e2f",
-    "url": "/fonts/Raleway-Light.353ea0a0.ttf"
+    "revision": "2f99a85426a45e0c7f8707aae53af803",
+    "url": "/fonts/Raleway-Bold.2f99a854.ttf"
   },
   {
     "revision": "d3b7a7407162a3f314d3f45b5d12d8f0",
@@ -68,16 +68,16 @@ self.__precacheManifest = [
     "url": "/img/Nucleo.c4d05053.svg"
   },
   {
-    "revision": "6ec58d1ea836b7ef69f94ea6770972a3",
-    "url": "/fonts/Raleway-SemiBold.6ec58d1e.ttf"
+    "revision": "353ea0a0ae707df315407d72fa507e2f",
+    "url": "/fonts/Raleway-Light.353ea0a0.ttf"
   },
   {
     "revision": "818653e129689a969c72e0724f3a5169",
     "url": "/fonts/Raleway-Medium.818653e1.ttf"
   },
   {
-    "revision": "2f99a85426a45e0c7f8707aae53af803",
-    "url": "/fonts/Raleway-Bold.2f99a854.ttf"
+    "revision": "6ec58d1ea836b7ef69f94ea6770972a3",
+    "url": "/fonts/Raleway-SemiBold.6ec58d1e.ttf"
   },
   {
     "revision": "ab3452047d0376eb936220f1834a4d59",
@@ -96,7 +96,7 @@ self.__precacheManifest = [
     "url": "/css/chunk-vendors.02c68b01.css"
   },
   {
-    "revision": "1f4eba5e6d1f5c3af52e",
-    "url": "/css/app.e8e4091f.css"
+    "revision": "1f416515d692df430414",
+    "url": "/css/app.d6b8c42b.css"
   }
 ];
