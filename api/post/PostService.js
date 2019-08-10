@@ -24,6 +24,14 @@ async function query(params) {
   }
 }
 
+// //Create the index 
+// posts.createIndex({"$**":"text"}) //This is indexing all the texts fields on the posts table 
+
+// //Then perform the fulltext search 
+// posts.find({$text: {$search: params.keyword}}, {score: {$meta: "textScore"}}).sort({score:{$meta:"textScore"}}) .toArray()
+
+
+
 async function getById(id) {
   const collection = await DBService.getCollection(COLLECTION_NAME);
   try {

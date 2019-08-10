@@ -17,7 +17,7 @@ async function signup(newUser){
     
     if (!newUser.email || !newUser.pass || !newUser.firstName || !newUser.lastName) return Promise.reject('email, first and last name and password are required!')
     const userExists = await UserService.getByEmail(newUser.email)
-    if(userExists) return Promise.reject('Email exists, login')
+    if(userExists) return Promise.reject('Email already exists, try to login')
     const hash = await bcrypt.hash(newUser.pass, saltRounds)
     newUser.pass=hash;
     const user = await UserService.add(newUser)

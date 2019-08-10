@@ -60,42 +60,6 @@ async function update(user) {
     throw err;
   }
 }
-// async function updateLikes(likesUpdateObj) {
-//   const collection = await DBService.getCollection(COLLECTION_USER);
-//   const { userId, postId } = likesUpdateObj;
-//   console.log("userId, postId", userId, postId);
-
-//   let userLikes = await collection
-//     .find({ _id: ObjectId(userId) })
-//     .toArray()
-//     .then(arr => arr[0].likedPosts);
-
-//   try {
-//     if (userLikes.includes(postId)) {
-//       console.log("not already likes");
-//       await Promise.all([
-//         userRemoveLike(collection, userId, postId),
-//         postRemoveLike(userId, postId)
-//       ]);
-//     } else {
-//       console.log("already likes");
-
-//       await Promise.all([
-//         userAddLike(collection, userId, postId),
-//         postAddLike(userId, postId)
-//       ]);
-//     }
-
-//     let updatedUser = await collection
-//       .find({ _id: ObjectId(userId) })
-//       .toArray()
-//       .then(arr => arr[0]);
-//     return updatedUser;
-//   } catch (err) {
-//     console.log(err);
-//     // throw err;
-//   }
-// }
 
 async function userRemoveLike(userId, postId) {
   const collection = await DBService.getCollection(COLLECTION_USER);
