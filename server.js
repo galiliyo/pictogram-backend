@@ -10,6 +10,9 @@ const logger = require('./services/LoggerService')
 const PostRoutes = require('./api/post/PostRoutes')
 const AuthRoutes = require('./api/auth/AuthRoutes')
 const UserRoutes = require('./api/user/UserRoutes')
+app.use(express.static('public'));
+
+
 
 const multer = require('multer')
 const cloudinary = require('cloudinary').v2;
