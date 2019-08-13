@@ -44,17 +44,14 @@ async function toggleLike(req, res) {
   const collection = await DBService.getCollection("users");
 
   const { userId, postId } = req.body;
-  console.log("userId, postId", userId, postId);
 
   let userLikes = await collection
     .find({ _id: ObjectId(userId) })
     .toArray()
     .then(arr => arr[0].likedPosts);
 
-    console.log('userLikes',userLikes) 
  
     if (userLikes.includes(postId)) {
-      console.log("already likes");
 
       await Promise.all([
         UserService.userRemoveLike(userId, postId),
@@ -63,7 +60,6 @@ async function toggleLike(req, res) {
         console.log('error removing a like', err)
       })
     } else {
-      console.log("did not like");
 
       await Promise.all([
         PostService.postAddLike(userId, postId),

@@ -4,7 +4,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 async function getPosts(req, res) {
   const params = req.query;
-  console.log("get posts", params);
+
   if (req.session && req.session.user) {
     params.owner = {};
     params.owner = { _id: req.session.user._id };
@@ -67,7 +67,6 @@ async function updatePost(req, res) {
 
 async function addComment(req, res) {
   const commentObj = req.body;
-  console.log("comment", commentObj);
   try {
     const updatedPost = await PostService.addComment(commentObj);
     res.json(updatedPost);
