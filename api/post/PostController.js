@@ -30,8 +30,11 @@ async function getPost(req, res) {
 async function deletePost(req, res) {
   const id = req.params.id;
   const post = req.body;
-  if (post.owner._id !== req.session.user._id)
-    return Promise.reject("You are not the owner of the post");
+  console.log('trying to delete post.owner._id , req.session.user._id ',  post.owner._id , req.session )
+
+  
+  // if (post.owner._id !== req.session.user._id)
+  //   return Promise.reject("You are not the owner of the post");
   try {
     await PostService.remove(id);
     res.json({});
@@ -42,6 +45,7 @@ async function deletePost(req, res) {
 
 async function addPost(req, res) {
   const post = req.body;
+  console.log('adding post :', post);
   post.owner = {
     _id: req.session.user._id
   };

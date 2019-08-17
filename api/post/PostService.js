@@ -64,8 +64,10 @@ async function remove(id) {
   try {
     const postToCheck = await collection.findOne({ _id: ObjectId(id) })
 
-    await collection.remove({ _id: ObjectId(id) })
+    await collection.deleteOne({ _id: ObjectId(id) })
   } catch (err) {
+    console.log('Could not delete post');
+    
     throw err
   }
 }

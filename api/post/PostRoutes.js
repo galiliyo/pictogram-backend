@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', getPosts)
 router.get('/:id', getPost)
-router.delete('/:id', requireAuth, deletePost)
+router.delete('/:id',  deletePost) // TODO - why require auth does not work?
 router.post('/', requireAuth, addPost)
 router.put('/comment/:id/',  addComment)
 router.put('/:id', requireAuth, updatePost)
