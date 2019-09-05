@@ -1,81 +1,90 @@
-const PostService = require("./PostService");
-const UserService = require("../user/UserService");
-const ObjectId = require("mongodb").ObjectId;
+const PostService = require('./PostService')
+const UserService = require('../user/UserService')
+const ObjectId = require('mongodb').ObjectId
 
 async function getPosts(req, res) {
-  const params = req.query;
+  const params = req.query
 
   if (req.session && req.session.user) {
-    params.owner = {};
-    params.owner = { _id: req.session.user._id };
+    params.owner = {}
+    params.owner = { _id: req.session.user._id }
   }
   try {
-    const posts = await PostService.query(params);
-    res.json(posts);
+    const posts = await PostService.query(params)
+    res.json(posts)
   } catch (err) {
-    res.status(404).send("Unknown Posts");
+    res.status(404).send('Unknown Posts')
   }
 }
 
 async function getPost(req, res) {
-  const id = req.params.id;
+  const id = req.params.id
   try {
-    const post = await PostService.getById(id);
-    res.json(post);
+    const post = await PostService.getById(id)
+    res.json(post)
   } catch (err) {
-    res.status(404).send("Unknown Post");
+    res.status(404).send('Unknown Post')
   }
 }
 
 async function deletePost(req, res) {
-  const id = req.params.id;
-  const post = req.body;
-  console.log('trying to delete post.owner._id , req.session.user._id ',  post.owner._id , req.session )
+  const id = req.params.id
+  const post = req.body
+  console.log(
+    'trying to delete post.owner._id , req.session.user._id ',
+    post.owner._id,
+    req.session
+  )
 
-  
   // if (post.owner._id !== req.session.user._id)
   //   return Promise.reject("You are not the owner of the post");
   try {
-    await PostService.remove(id);
-    res.json({});
+    await PostService.remove(id)
+    res.json({})
   } catch (err) {
-    res.status(500).send("Could not delete");
+    res.status(500).send('Could not delete')
   }
 }
 
 async function addPost(req, res) {
-  const post = req.body;
-  console.log('adding post :', post);
+  console.log('got to post', req)
+
+  const post = req.body
+  // console.log('adding post :', post)
+
   post.owner = {
-    _id: req.session.user._id
-  };
+    _id: req.session.user._id,
+    firstName: req.session.user.firstName,
+    lastName: req.session.user.lastName
+  }
   try {
-    const postAdded = await PostService.add(post);
-    res.json(postAdded);
+    console.log('triying to add post', post)
+    const postAdded = await PostService.add(post)
+    res.json(postAdded)
   } catch (err) {
-    res.status(500).send("Could not add");
+    res.status(500).send('Could not add')
   }
 }
 
 async function updatePost(req, res) {
-  const post = req.body;
+  const post = req.body
   if (post.owner._id !== req.session.user._id)
-    return res.status(500).send("Could Not Edit");
+    return res.status(500).send('Could Not Edit')
   try {
-    const updatedPost = await PostService.update(post);
-    res.json(updatedPost);
+    const updatedPost = await PostService.update(post)
+    res.json(updatedPost)
   } catch (err) {
-    res.status(500).send("Could not edit");
+    res.status(500).send('Could not edit')
   }
 }
 
 async function addComment(req, res) {
-  const commentObj = req.body;
+  const commentObj = req.body
   try {
-    const updatedPost = await PostService.addComment(commentObj);
-    res.json(updatedPost);
+    const updatedPost = await PostService.addComment(commentObj)
+    res.json(updatedPost)
   } catch (err) {
-    res.status(500).send("Could not add comment");
+    res.status(500).send('Could not add comment')
   }
 }
 
@@ -86,4 +95,4 @@ module.exports = {
   addPost,
   updatePost,
   addComment
-};
+}

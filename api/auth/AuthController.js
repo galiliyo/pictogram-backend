@@ -2,7 +2,7 @@ const AuthService = require('./AuthService')
 
 async function login(req, res) {
     const { email, pass } = req.body;
-    console.log('email,pass :', email,pass);
+    // console.log('email,pass :', email,pass);
     try {
         const user = await AuthService.login(email, pass)
         req.session.user = user;
@@ -14,7 +14,7 @@ async function login(req, res) {
 async function signup(req, res) {
     
     const newUser = req.body;
-    console.log('try to signup',newUser);
+    // console.log('try to signup',newUser);
     try {
         const user = await AuthService.signup(newUser)
         req.session.user = user;

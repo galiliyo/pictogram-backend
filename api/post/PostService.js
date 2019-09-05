@@ -28,7 +28,7 @@ async function query(params) {
         .project({ score: { $meta: 'textScore' } })
         .sort({ score: { $meta: 'textScore' } }).toArray()
 
-      console.log('posts', posts)
+      // console.log('posts', posts)
       return posts
     } catch (err) {
       console.log('could not load from index', err)
@@ -85,6 +85,8 @@ async function update(post) {
 }
 
 async function add(post) {
+  console.log('adding post in be',post);
+  
   const collection = await DBService.getCollection(COLLECTION_NAME)
   try {
     await collection.insertOne(post)
