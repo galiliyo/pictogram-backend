@@ -47,10 +47,8 @@ async function deletePost(req, res) {
 }
 
 async function addPost(req, res) {
-  console.log('got to post', req)
 
   const post = req.body
-  // console.log('adding post :', post)
 
   post.owner = {
     _id: req.session.user._id,
@@ -58,7 +56,6 @@ async function addPost(req, res) {
     lastName: req.session.user.lastName
   }
   try {
-    console.log('triying to add post', post)
     const postAdded = await PostService.add(post)
     res.json(postAdded)
   } catch (err) {

@@ -4,7 +4,10 @@ const DBService = require('../../services/DBService')
 const ObjectId = require('mongodb').ObjectId
 
 const COLLECTION_NAME = 'posts'
-createIndex()
+
+DBService.createIndex(COLLECTION_NAME)
+
+//db.messages.find({$text: {$search: "chicago"}}, {score: {$meta: "textScore"}}).sort({score:{$meta:"textScore"}})
 
 async function createIndex() {
   const collection = await DBService.getCollection(COLLECTION_NAME)
@@ -20,15 +23,17 @@ async function query(params) {
       let posts = await collection
         .find({
           $text: {
-            $search: 'hi',
-            $caseSensitive: false,
-            $diacriticSensitive: true
+            $search: params.keyword,
+            $caseSensitive: false
           }
         })
         .project({ score: { $meta: 'textScore' } })
-        .sort({ score: { $meta: 'textScore' } }).toArray()
+        .sort({ score: { $meta: 'textScore' } })
+        .toArray()
+        .then(posts => {
+          console.log('posts', posts)
+        })
 
-      // console.log('posts', posts)
       return posts
     } catch (err) {
       console.log('could not load from index', err)
@@ -37,6 +42,7 @@ async function query(params) {
   } else
     try {
       let posts = await collection.find({}).toArray()
+      
       return posts
     } catch (err) {
       throw err
@@ -66,8 +72,8 @@ async function remove(id) {
 
     await collection.deleteOne({ _id: ObjectId(id) })
   } catch (err) {
-    console.log('Could not delete post');
-    
+    console.log('Could not delete post')
+
     throw err
   }
 }
@@ -85,8 +91,6 @@ async function update(post) {
 }
 
 async function add(post) {
-  console.log('adding post in be',post);
-  
   const collection = await DBService.getCollection(COLLECTION_NAME)
   try {
     await collection.insertOne(post)
@@ -128,8 +132,6 @@ async function addComment(commentObj) {
 async function postRemoveLike(userId, postId) {
   const collection = await DBService.getCollection(COLLECTION_NAME)
   try {
-    console.log('trying to remove post', postId)
-
     await collection.updateOne(
       { _id: ObjectId(postId) },
       { $pull: { likedBy: userId } }
