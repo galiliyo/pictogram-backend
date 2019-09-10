@@ -11,29 +11,23 @@ DBService.createIndex(COLLECTION_NAME)
 
 async function createIndex() {
   const collection = await DBService.getCollection(COLLECTION_NAME)
-  collection.createIndex({ '$**': 'text' })
+  collection.createIndex({ txt: 'text' })
 }
 async function query(params) {
   const collection = await DBService.getCollection(COLLECTION_NAME)
 
   if (params.keyword) {
     console.log('find in index', params.keyword)
-
     try {
       let posts = await collection
         .find({
-          $text: {
-            $search: params.keyword,
-            $caseSensitive: false
-          }
+          $or: [
+            { txt: { $regex: params.keyword, $options: '$i' } },
+            { tags: { $regex: params.keyword, $options: '$i' } },
+            { 'comments.txt': { $regex: params.keyword, $options: '$i' } }
+          ]
         })
-        .project({ score: { $meta: 'textScore' } })
-        .sort({ score: { $meta: 'textScore' } })
         .toArray()
-        .then(posts => {
-          console.log('posts', posts)
-        })
-
       return posts
     } catch (err) {
       console.log('could not load from index', err)
@@ -42,7 +36,7 @@ async function query(params) {
   } else
     try {
       let posts = await collection.find({}).toArray()
-      
+
       return posts
     } catch (err) {
       throw err

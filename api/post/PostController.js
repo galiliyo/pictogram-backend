@@ -6,11 +6,11 @@ async function getPosts(req, res) {
   const params = req.query
 
   if (req.session && req.session.user) {
-    params.owner = {}
-    params.owner = { _id: req.session.user._id }
   }
   try {
-    const posts = await PostService.query(params)
+    const posts = await PostService.query(params).then(posts => {
+      return posts
+    })
     res.json(posts)
   } catch (err) {
     res.status(404).send('Unknown Posts')
@@ -47,7 +47,6 @@ async function deletePost(req, res) {
 }
 
 async function addPost(req, res) {
-
   const post = req.body
 
   post.owner = {
