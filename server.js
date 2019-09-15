@@ -10,14 +10,16 @@ const logger = require("./services/LoggerService");
 const PostRoutes = require("./api/post/PostRoutes");
 const AuthRoutes = require("./api/auth/AuthRoutes");
 const UserRoutes = require("./api/user/UserRoutes");
-app.use(express.static("public"));
-
+const MongoStore = require("connect-mongo")(session);
 const multer = require("multer");
-// const cloudinary = require("cloudinary").v2;
+const cloudinary = require("cloudinary").v2;
 const upload = multer({ dest: "uploads/" });
 const cloudinaryConfig = require("./data/config.json").cloudinary;
-// cloudinary.config(cloudinaryConfig);
+const config = require("./config");
 
+cloudinary.config(cloudinaryConfig);
+
+app.use(express.static("public"));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(
@@ -25,9 +27,14 @@ app.use(
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false },
+    store: new MongoStore({ url: config.dbURL })
   })
 );
+// console.log(
+//   " ====================================================================== config.dbURL",
+//   config.dbURL
+// );
 
 if (process.env.NODE_ENV !== "production") {
   const corsOptions = {
