@@ -31,10 +31,6 @@ app.use(
     store: new MongoStore({ url: config.dbURL })
   })
 );
-// console.log(
-//   " ====================================================================== config.dbURL",
-//   config.dbURL
-// );
 
 if (process.env.NODE_ENV !== "production") {
   const corsOptions = {

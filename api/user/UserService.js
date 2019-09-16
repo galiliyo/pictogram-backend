@@ -86,15 +86,12 @@ async function userAddLike(userId, postId) {
   }
 }
 
-
-
 module.exports = {
   getUsers,
   getByEmail,
   add,
   getById,
   update,
-  // updateLikes,
   userAddLike,
   userRemoveLike
 };
